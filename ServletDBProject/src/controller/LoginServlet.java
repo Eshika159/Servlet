@@ -3,6 +3,7 @@ package controller;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -14,14 +15,17 @@ import serviceLayer.UserServiceLayer;
 public class LoginServlet extends HttpServlet {
 		
 		protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	
+			
 		int userid=Integer.parseInt(request.getParameter("t1"));
 		String pass=request.getParameter("t2");
 		UserServiceLayer usl=new UserServiceLayer();
 		String result=usl.LoginUser(userid, pass);
 		PrintWriter out=response.getWriter();
-		out.println("<html><body>");
-		out.println("<h1>"+result+"</h1>");
+		if(result.equals("success"))
+		{	request.setAttribute("msg","Logged in");
+			RequestDispatcher dis=request.getRequestDispatcher("Welcome.jsp");
+			dis.forward(request,response);
+		}
 		
 		}
 

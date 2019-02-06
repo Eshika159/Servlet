@@ -20,7 +20,7 @@ public class SignUpServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		PrintWriter out=response.getWriter();
+		//PrintWriter out=response.getWriter();
 		
 		int uid=Integer.parseInt(request.getParameter("t1"));
 		String pass=request.getParameter("t2");
@@ -35,8 +35,8 @@ public class SignUpServlet extends HttpServlet {
 		
 		if(result.equals("Success"))
 		{
-			request.setAttribute("msg",result);
-			RequestDispatcher dis=request.getRequestDispatcher("WelcomeServlet");
+			request.setAttribute("msg","Successfully Registered");
+			RequestDispatcher dis=request.getRequestDispatcher("Welcome.jsp");
 			dis.forward(request, response);
 		}
 		

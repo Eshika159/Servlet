@@ -2,6 +2,7 @@ package dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import config.MyConnection;
@@ -36,14 +37,53 @@ public class UserDaoImpl implements UserDao{
 
 	@Override
 	public String LoginUser(int uid, String pass) {
+		String pass2 = null;
+		try {
+			PreparedStatement ps=con.prepareStatement("select Pass from user where Uid=?");
+			ps.setInt(1,uid);
+			ResultSet res=ps.executeQuery();
+			if(res.next()){
+			 pass2=res.getString(1);
+			
+			if(pass2.equals(pass))
+				return "success";
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
-		return null;
+		return "fail";
 	}
 
 	@Override
 	public String changePassword(int uid, String newPass, String oldPass) {
-		// TODO Auto-generated method stub
-		return null;
+		String pass2 = null;
+		try {
+			PreparedStatement ps=con.prepareStatement("select Pass from user where Uid=?");
+			ps.setInt(1,uid);
+			ResultSet res=ps.executeQuery();
+			if(res.next()){
+			 pass2=res.getString(1);
+			
+			if(pass2.equals(oldPass))
+			{
+				PreparedStatement ps2=con.prepareStatement("update user set Pass=? where Uid=?");
+				ps2.setString(1,newPass);
+				ps2.setInt(2,uid);
+				int rows=ps2.executeUpdate();
+				if(rows>0)
+					return "success";
+			}
+				
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return "fail";
+		
 	}
 
 }
